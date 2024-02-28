@@ -7,9 +7,15 @@
 
 // Globals
 let toastContainer = null;
+const defaultColor = {
+    red: 221,
+    green: 222,
+    blue: 238
+}
 
 window.onload = () => {
     main();
+    updateColorCodeToDom(defaultColor);
 };
 
 function main() {
@@ -23,7 +29,7 @@ function main() {
     const colorSliderBlue = document.getElementById('color-slider-blue');
 
     const copyToClipBoardBtn = document.getElementById('copy-to-clipboard')
-    const colorModeRadios = document.getElementsByName('color-mode');
+
 
 
 
@@ -37,37 +43,7 @@ function main() {
     colorSliderGreen.addEventListener('change', handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue));
     colorSliderBlue.addEventListener('change', handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue));
 
-    copyToClipBoardBtn.addEventListener('click', function () {
-        const mode = getCheckValueFromRadio(colorModeRadios)
-
-        if (mode === null) {
-            throw new Error('Invalid Radio Input')
-        }
-        if (mode === 'hex') {
-            const hexColor = document.getElementById('input-hex').value;
-            navigator.clipboard.writeText(`#${hexColor}`);
-        } else {
-            const rgbColor = document.getElementById('input-rgb').value;
-            navigator.clipboard.writeText(`#${rgbColor}`);
-        }
-    })
-
-
-
-
-
-    //     copyBtn.addEventListener('click', function () {
-    //         navigator.clipboard.writeText(`#${output.value}`);
-    //         if (div !== null) {
-    //             div.remove();
-    //             div = null;
-    //         }
-    //         if (isValidHex(output.value)) {
-    //             generateToastMessage(`#${output.value} copied`);
-    //         } else {
-    //             alert('Invalid Color Code');
-    //         }
-    //     });
+    copyToClipBoardBtn.addEventListener('click', copyToClipBoard);
 }
 
 // function 1 - generate three random decimal number for red, green and blue
@@ -150,6 +126,43 @@ function handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue) {
         updateColorCodeToDom(color)
     }
 }
+
+
+function copyToClipBoard() {
+    const colorModeRadios = document.getElementsByName('color-mode');
+    const mode = getCheckValueFromRadio(colorModeRadios)
+
+    if (mode === null) {
+        throw new Error('Invalid Radio Input')
+    }
+
+    if (toastContainer !== null) {
+        toastContainer.remove();
+        toastContainer = null;
+    }
+
+    if (mode === 'hex') {
+        const hexColor = document.getElementById('input-hex').value;
+        if (hexColor && isValidHex(hexColor)) {
+            navigator.clipboard.writeText(`#${hexColor}`);
+            generateToastMessage(`#${hexColor}`)
+        } else {
+            alert('Invalid Hex Color')
+        }
+    } else {
+        const rgbColor = document.getElementById('input-rgb').value;
+        if (rgbColor) {
+            navigator.clipboard.writeText(`${rgbColor}`);
+            generateToastMessage(`${rgbColor}`)
+        } else {
+            alert('Invalid RGB Color')
+        }
+
+    }
+}
+
+
+
 
 
 //Dom Function
