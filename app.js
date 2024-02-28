@@ -6,7 +6,7 @@
 
 
 // Globals
-let div = null;
+let toastContainer = null;
 
 window.onload = () => {
     main();
@@ -22,6 +22,10 @@ function main() {
     const colorSliderGreen = document.getElementById('color-slider-green');
     const colorSliderBlue = document.getElementById('color-slider-blue');
 
+    const copyToClipBoardBtn = document.getElementById('copy-to-clipboard')
+    const colorModeRadios = document.getElementsByName('color-mode');
+
+
 
 
     //Event Listener
@@ -32,6 +36,21 @@ function main() {
     colorSliderRed.addEventListener('change', handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue));
     colorSliderGreen.addEventListener('change', handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue));
     colorSliderBlue.addEventListener('change', handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue));
+
+    copyToClipBoardBtn.addEventListener('click', function () {
+        const mode = getCheckValueFromRadio(colorModeRadios)
+
+        if (mode === null) {
+            throw new Error('Invalid Radio Input')
+        }
+        if (mode === 'hex') {
+            const hexColor = document.getElementById('input-hex').value;
+            navigator.clipboard.writeText(`#${hexColor}`);
+        } else {
+            const rgbColor = document.getElementById('input-rgb').value;
+            navigator.clipboard.writeText(`#${rgbColor}`);
+        }
+    })
 
 
 
@@ -49,22 +68,6 @@ function main() {
     //             alert('Invalid Color Code');
     //         }
     //     });
-
-    //     copyBtn2.addEventListener('click', function () {
-    //         navigator.clipboard.writeText(`#${output2.value}`);
-    //         if (div !== null) {
-    //             div.remove();
-    //             div = null;
-    //         }
-    //         if (isValidHex(output.value)) {
-    //             generateToastMessage(`#${output2.value} copied`);
-    //         } else {
-    //             alert('Invalid Color Code');
-    //         }
-    //     });
-
-
-    // 
 }
 
 // function 1 - generate three random decimal number for red, green and blue
@@ -150,24 +153,52 @@ function handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue) {
 
 
 //Dom Function
-
+/**
+ * Generate a dynamic DOM element to show toast message
+ * @param {string} msg 
+ */
 function generateToastMessage(msg) {
-    div = document.createElement('div');
-    div.innerText = msg;
-    div.className = 'toast-message toast-message-slide-in';
+    toastContainer = document.createElement('div');
+    toastContainer.innerText = msg;
+    toastContainer.className = 'toast-message toast-message-slide-in';
 
-    div.addEventListener('click', function () {
-        div.classList.remove('toast-message-slide-in');
-        div.classList.add('toast-message-slide-out');
+    toastContainer.addEventListener('click', function () {
+        toastContainer.classList.remove('toast-message-slide-in');
+        toastContainer.classList.add('toast-message-slide-out');
 
-        div.addEventListener('animationend', function () {
-            div.remove();
-            div = null;
+        toastContainer.addEventListener('animationend', function () {
+            toastContainer.remove();
+            toastContainer = null;
         });
     });
 
-    document.body.appendChild(div);
+    document.body.appendChild(toastContainer);
 }
+
+
+/**
+ * find the checked element from a list of radio button
+ * @param {Array} nodes 
+ * @returns{string / null}
+ */
+function getCheckValueFromRadio(nodes) {
+    let checkedValue = null;
+    for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].checked) {
+            checkedValue = nodes[i].value;
+            break;
+        }
+    }
+    return checkedValue;
+}
+
+
+
+
+
+
+
+
 
 /**
  * update dom element with calculate color values
