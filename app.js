@@ -13,17 +13,28 @@ window.onload = () => {
 };
 
 function main() {
+
+    //Dom Reference
     const generateRandomColorBtn = document.getElementById('generate-random-color');
 
-    const colorModeHex = document.getElementById('input-hex')
+    const colorModeHex = document.getElementById('input-hex');
+    const colorSliderRed = document.getElementById('color-slider-red');
+    const colorSliderGreen = document.getElementById('color-slider-green');
+    const colorSliderBlue = document.getElementById('color-slider-blue');
 
 
 
+    //Event Listener
     generateRandomColorBtn.addEventListener('click', handelGenerateRandomColorBtn);
 
-
-
     colorModeHex.addEventListener('keyup', handelColorModHex);
+
+    colorSliderRed.addEventListener('change', handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue));
+    colorSliderGreen.addEventListener('change', handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue));
+    colorSliderBlue.addEventListener('change', handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue));
+
+
+
 
 
     //     copyBtn.addEventListener('click', function () {
@@ -123,6 +134,19 @@ function handelColorModHex(e) {
     }
 }
 
+
+function handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue) {
+
+
+    return function () {
+        const color = {
+            red: parseInt(colorSliderRed.value),
+            green: parseInt(colorSliderGreen.value),
+            blue: parseInt(colorSliderBlue.value)
+        };
+        updateColorCodeToDom(color)
+    }
+}
 
 
 //Dom Function
