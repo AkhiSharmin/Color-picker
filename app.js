@@ -42,6 +42,7 @@ const defaultPresetColors = [
     '#ffcc80',
 ];
 
+const copySound = new Audio('/src_project-10_copy-sound.wav')
 
 window.onload = () => {
     main();
@@ -80,7 +81,12 @@ function main() {
     copyToClipBoardBtn.addEventListener('click', copyToClipBoard);
 
     presetColorParent.addEventListener('click', function (event) {
-        console.log(event.target.className);
+        const child = event.target;
+        if (child.className === 'color-box') {
+            navigator.clipboard.writeText(child.getAttribute('data-color'))
+            copySound.volume = 0.5;
+            copySound.play()
+        }
     })
 }
 
