@@ -84,6 +84,12 @@ function main() {
         const child = event.target;
         if (child.className === 'color-box') {
             navigator.clipboard.writeText(child.getAttribute('data-color'))
+            const dataColor = child.getAttribute('data-color');
+            if (toastContainer !== null) {
+                toastContainer.remove();
+                toastContainer = null;
+            }
+            generateToastMessage(dataColor)
             copySound.volume = 0.5;
             copySound.play()
         }
