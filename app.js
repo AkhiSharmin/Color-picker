@@ -41,7 +41,7 @@ const defaultPresetColors = [
     '#ccff90',
     '#ffcc80',
 ];
-const customColors = [];
+let customColors = new Array(24);
 const copySound = new Audio('/src_project-10_copy-sound.wav')
 
 window.onload = () => {
@@ -117,6 +117,9 @@ function handelSavetoCustomBtn(customColorParent, inputHex) {
             return;
         }
         customColors.unshift(color);
+        if (customColors.length > 24) {
+            customColors = customColors.slice(0, 24);
+        }
         removeChildren(customColorParent);
         displayColorBoxes(customColorParent, customColors);
     };
