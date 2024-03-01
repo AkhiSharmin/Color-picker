@@ -5,13 +5,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Color picker</title>
+    <title>Change Background Color</title>
     <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <script src="./app.js" defer></script>
 </head>
 
 <body>
-
     <div class="container">
         <!-- display section -->
         <section class="section">
@@ -29,9 +28,14 @@
         <section class="section">
             <section class="section-header">
                 <h3 class="section-title">Change & Copy Color</h3>
-                <button class="section-header-action" id="copy-to-clipboard">
-                    Copy To Clipboard
-                </button>
+                <div class="section-header-action-group">
+                    <button class="section-header-action" id="save-to-custom">
+                        Save
+                    </button>
+                    <button class="section-header-action" id="copy-to-clipboard">
+                        Copy
+                    </button>
+                </div>
             </section>
             <div class="divider"></div>
             <div class="select-copy-mode">
@@ -84,7 +88,6 @@
                         <input type="range" min="0" max="255" value="238" class="color-slider" id="color-slider-blue" />
                     </div>
                 </div>
-
             </div>
         </section>
 
@@ -96,9 +99,16 @@
             <div class="divider"></div>
             <div class="preset-colors" id="preset-colors"></div>
         </section>
-    </div>
 
-    <script src="app.js"></script>
+        <!-- Custom Presets -->
+        <section class="section">
+            <div class="section-header">
+                <h3 class="section-title">Custom Colors</h3>
+            </div>
+            <div class="divider"></div>
+            <div class="preset-colors" id="custom-colors"></div>
+        </section>
+    </div>
 </body>
 
 </html>

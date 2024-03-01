@@ -41,7 +41,7 @@ const defaultPresetColors = [
     '#ccff90',
     '#ffcc80',
 ];
-
+const customColors = [];
 const copySound = new Audio('/src_project-10_copy-sound.wav')
 
 window.onload = () => {
@@ -67,6 +67,10 @@ function main() {
 
     const presetColorParent = document.getElementById('preset-colors');
 
+    const saveToCustomBtn = document.getElementById('save-to-custom');
+    const customColorParent = document.getElementById('custom-colors');
+
+
 
 
     //Event Listener
@@ -78,23 +82,47 @@ function main() {
     colorSliderGreen.addEventListener('change', handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue));
     colorSliderBlue.addEventListener('change', handelColorSlider(colorSliderRed, colorSliderGreen, colorSliderBlue));
 
+
+    saveToCustomBtn.addEventListener('click', handelSavetoCustomBtn(customColorParent, colorModeHex))
+
+
     copyToClipBoardBtn.addEventListener('click', copyToClipBoard);
 
-    presetColorParent.addEventListener('click', function (event) {
-        const child = event.target;
-        if (child.className === 'color-box') {
-            navigator.clipboard.writeText(child.getAttribute('data-color'))
-            const dataColor = child.getAttribute('data-color');
-            if (toastContainer !== null) {
-                toastContainer.remove();
-                toastContainer = null;
-            }
-            generateToastMessage(dataColor)
-            copySound.volume = 0.5;
-            copySound.play()
-        }
-    })
+    presetColorParent.addEventListener('click', handelPresetColorsParent);
 }
+
+
+function handelPresetColorsParent(event) {
+    const child = event.target;
+    if (child.className === 'color-box') {
+        navigator.clipboard.writeText(child.getAttribute('data-color'))
+        const dataColor = child.getAttribute('data-color');
+        if (toastContainer !== null) {
+            toastContainer.remove();
+            toastContainer = null;
+        }
+        generateToastMessage(dataColor)
+        copySound.volume = 0.5;
+        copySound.play()
+    }
+}
+
+
+function handelSavetoCustomBtn(customColorParent, inputHex) {
+
+    return function () {
+        const color = `#${inputHex.value}`;
+        if (customColors.includes(color)) {
+            alert(`Awww Already Saved in your Preset List 🫠`);
+            return;
+        }
+        customColors.unshift(color);
+        removeChildren(customColorParent);
+        displayColorBoxes(customColorParent, customColors);
+    };
+}
+
+
 
 // function 1 - generate three random decimal number for red, green and blue
 // return as an object
@@ -316,8 +344,18 @@ function displayColorBoxes(parent, colors) {
     }))
 }
 
+/**
+ * remove all children from parent
+ * @param {object} parent 
+ */
 
-
+function removeChildren(parent) {
+    let child = parent.lastElementChild;
+    while (child) {
+        parent.removeChild(child);
+        child = parent.lastElementChild;
+    }
+}
 
 
 /**
