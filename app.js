@@ -75,6 +75,13 @@ function main() {
     const saveToCustomBtn = document.getElementById('save-to-custom');
     const customColorParent = document.getElementById('custom-colors');
 
+    const bgFileInput = document.getElementById('bg-file-input');
+    const bgFileInputBtn = document.getElementById('bg-file-input-btn');
+
+    const bgFileDeleteBtn = document.getElementById('bg-file-delete-btn');
+    bgFileDeleteBtn.style.display = 'none'
+
+    const bgPreview = document.getElementById('bg-preview');
 
 
 
@@ -94,6 +101,27 @@ function main() {
     copyToClipBoardBtn.addEventListener('click', copyToClipBoard);
 
     presetColorParent.addEventListener('click', handelPresetColorsParent);
+
+
+    bgFileInputBtn.addEventListener('click', function () {
+        bgFileInput.click()
+    });
+
+    bgFileInput.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const imgUrl = URL.createObjectURL(file);
+        bgPreview.style.background = `url(${imgUrl})`;
+        document.body.style.background = `url(${imgUrl})`;
+        bgFileDeleteBtn.style.display = 'inline'
+    });
+
+    bgFileDeleteBtn.addEventListener('click', function () {
+        bgPreview.style.background = `none`;
+        bgPreview.style.backgroundColor = '#dddeee';
+        document.body.style.background = `none`;
+        document.body.style.backgroundColor = '#dddeee';
+        bgFileDeleteBtn.style.display = `none`;
+    })
 }
 
 
