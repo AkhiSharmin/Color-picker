@@ -51,6 +51,11 @@ window.onload = () => {
     displayColorBoxes(
         document.getElementById('preset-colors'), defaultPresetColors
     );
+    const customColorsString = localStorage.getItem('custom-colors');
+    if (customColorsString) {
+        customColors = JSON.parse(customColorsString);
+        displayColorBoxes(document.getElementById('custom-colors'), customColors);
+    }
 };
 
 function main() {
@@ -120,6 +125,8 @@ function handelSavetoCustomBtn(customColorParent, inputHex) {
         if (customColors.length > 24) {
             customColors = customColors.slice(0, 24);
         }
+        localStorage.setItem('custom-colors', JSON.stringify(customColors));
+
         removeChildren(customColorParent);
         displayColorBoxes(customColorParent, customColors);
     };
@@ -342,8 +349,10 @@ function generateColorBox(color) {
 
 function displayColorBoxes(parent, colors) {
     colors.forEach((color => {
-        const colorBox = generateColorBox(color);
-        parent.appendChild(colorBox)
+        if (isValidHex(color.slice(1))) {
+            const colorBox = generateColorBox(color);
+            parent.appendChild(colorBox)
+        }
     }))
 }
 
